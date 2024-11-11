@@ -1,0 +1,219 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "funcionario.h"
+
+
+
+FUNCIONARIO cadastra_funcionario(){			//Função testada e funcionando!
+	arquivo = fopen("funcionario.txt","a+");
+		if(arquivo==NULL){
+			fopen("funcionario.txt","w");
+		}
+		printf("Entre com o primeiro nome: ");
+		scanf("%s",&a.nome);
+		fflush(stdin);
+		printf("Entre com o sobrenome: ");
+		scanf("%s",&a.sobrenome);
+		fflush(stdin);
+		printf("Entre com o cargo do funcionario: ");
+		scanf("%s",&a.cargo);
+		fflush(stdin);
+		printf("Entre com o ID do funcionario: ");
+		scanf("%d",&a.id);
+		int c;
+    	while ((c = getchar()) != '\n' && c != EOF) { }
+		grava_txt();		
+
+
+}
+
+void menu_funcionario(){
+	printf("\n\n_*_*_*_*_*_*_*_*_*_*_*Menu Funcionario*_*_*_*_*_*_*_*_*_*_*_*_\n\n");
+	printf("[1] Cadastro de funcionario \n[2] Alterar funcionario \n[3] Excluir funcionario \n[4] Lista de funcionarios \n[5] Retornar menu principal \n");
+	printf("Resposta: ");
+	scanf("%d",&menu);
+	printf("\n");
+	
+	fflush(stdin);
+	
+}
+
+void grava_txt(){		//Função testada
+	fprintf(arquivo, "%s %s %s %d\n", a.nome, a.sobrenome, a.cargo, a.id);
+	fclose(arquivo);
+	printf("Arquivo gravado com sucesso.\n");
+	}
+
+void imprime_lista(){		//TESTADO
+	arquivo = fopen("funcionario.txt","r");
+		if(arquivo==NULL){
+			printf("Erro ao abrir arquivo.\n");
+		}else{
+			while(fgets(linha,sizeof(linha),arquivo)!=NULL){
+				printf("%s",linha);
+			}
+		}
+		fclose(arquivo);
+}
+
+void alterarCargo() {			//TESTADO
+    FUNCIONARIO funcionarios[MAX];
+    int totalFuncionarios = 0;
+    int idProcurado=0, i;
+    char novoCargo[MAX];
+    
+    // Abrir o arquivo para leitura
+    arquivo = fopen("funcionario.txt", "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    // Ler os dados do arquivo
+    while (fscanf(arquivo, "%s %s %s %d", funcionarios[totalFuncionarios].nome, 
+           funcionarios[totalFuncionarios].sobrenome, 
+           funcionarios[totalFuncionarios].cargo, 
+           &funcionarios[totalFuncionarios].id) != EOF) {
+        totalFuncionarios++;
+    }
+    fclose(arquivo);
+    
+    // Solicitar o ID do funcionário a ser alterado
+    printf("Digite o ID do funcionario para alterar o cargo: ");
+    scanf("%d", &idProcurado);
+
+    // Verificar se o ID existe e solicitar o novo cargo
+    for (i = 0; i < totalFuncionarios; i++) {
+        if (funcionarios[i].id == idProcurado) {
+            printf("Funcionario encontrado: %s %s - Cargo atual: %s\n", 
+                   funcionarios[i].nome, funcionarios[i].sobrenome, funcionarios[i].cargo);
+            printf("Digite o novo cargo: ");
+            scanf(" %[^\n]", novoCargo);
+            strcpy(funcionarios[i].cargo, novoCargo);
+            printf("Cargo alterado com sucesso!\n");
+            break;
+        }
+    }
+
+    if (i == totalFuncionarios) {
+        printf("Funcionario com ID %d nao encontrado.\n", idProcurado);
+        return;
+    }
+
+    // Abrir o arquivo para reescrever os dados alterados
+    arquivo = fopen("funcionario.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+
+    // Regravar todos os dados no arquivo
+    for (i = 0; i < totalFuncionarios; i++) {
+        fprintf(arquivo, "%s %s %s %d\n", funcionarios[i].nome, funcionarios[i].sobrenome, 
+                funcionarios[i].cargo, funcionarios[i].id);
+    }
+
+    fclose(arquivo);
+    printf("Arquivo atualizado com sucesso.\n");
+}
+
+void exclui_funcionario(){
+	 FUNCIONARIO funcionarios[MAX];
+    int totalFuncionarios = 0;
+    int idProcurado=0, i;
+    char novoCargo[MAX];
+    
+    // Abrir o arquivo para leitura
+    arquivo = fopen("funcionario.txt", "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    // Ler os dados do arquivo
+    while (fscanf(arquivo, "%s %s %s %d", funcionarios[totalFuncionarios].nome, 
+           funcionarios[totalFuncionarios].sobrenome, 
+           funcionarios[totalFuncionarios].cargo, 
+           &funcionarios[totalFuncionarios].id) != EOF) {
+        totalFuncionarios++;
+    }
+    fclose(arquivo);
+    
+    // Solicitar o ID do funcionário a ser alterado
+    printf("Digite o ID do funcionario para Excluir: ");
+    scanf("%d", &idProcurado);
+
+    // Verificar se o ID existe e solicitar o novo cargo
+    for (i = 0; i < totalFuncionarios; i++) {
+        if (funcionarios[i].id == idProcurado) {
+            printf("Funcionario encontrado: %s %s - Cargo atual: %s\n", 
+                   funcionarios[i].nome, funcionarios[i].sobrenome, funcionarios[i].cargo);
+            
+            strcpy(funcionarios[i].nome,"Excluido");
+            strcpy(funcionarios[i].sobrenome,"Excluido");
+			strcpy(funcionarios[i].cargo, "Excluido");
+			funcionarios[i].id=0;
+            
+            printf("Cargo excluido com sucesso!\n");
+            break;
+        }
+    }
+
+    if (i == totalFuncionarios) {
+        printf("Funcionario com ID %d nao encontrado.\n", idProcurado);
+        return;
+    }
+
+    // Abrir o arquivo para reescrever os dados alterados
+    arquivo = fopen("funcionario.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+
+    // Regravar todos os dados no arquivo
+    for (i = 0; i < totalFuncionarios; i++) {
+        fprintf(arquivo, "%s %s %s %d\n", funcionarios[i].nome, funcionarios[i].sobrenome, 
+                funcionarios[i].cargo, funcionarios[i].id);
+    }
+
+    fclose(arquivo);
+    printf("Arquivo atualizado com sucesso.\n");
+}
+
+void opcoes_funcionario(){	
+int sair =0;
+	do{
+		menu_funcionario();
+		
+	switch(menu) {
+		case 1:
+		//	cadastro de funcionario!
+		cadastra_funcionario();
+		//contagem++;
+		break;		
+	
+		case 2:
+		alterarCargo();
+			break;
+		case 3:
+		//Excluir
+		exclui_funcionario();
+			break;
+		case 4:
+		//Lista de funcionarios
+		imprime_lista();
+			break;	
+		default:
+		sair=1;
+		break;
+	}
+		
+	}while(sair!=1);
+}
+
+
+
+
