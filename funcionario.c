@@ -7,10 +7,8 @@
 
 
 FUNCIONARIO cadastra_funcionario(){			//Função testada e funcionando!
-	arquivo = fopen("funcionario.txt","a+");
-		if(arquivo==NULL){
-			fopen("funcionario.txt","w");
-		}
+		open_AW();
+		
 		printf("Entre com o primeiro nome: ");
 		scanf("%s",&a.nome);
 		fflush(stdin);
@@ -24,6 +22,7 @@ FUNCIONARIO cadastra_funcionario(){			//Função testada e funcionando!
 		scanf("%d",&a.id);
 		int c;
     	while ((c = getchar()) != '\n' && c != EOF) { }
+		
 		grava_txt();		
 
 
@@ -65,11 +64,7 @@ void alterarCargo() {			//TESTADO
     char novoCargo[MAX];
     
     // Abrir o arquivo para leitura
-    arquivo = fopen("funcionario.txt", "r");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        return;
-    }
+    open_R();
 
     // Ler os dados do arquivo
     while (fscanf(arquivo, "%s %s %s %d", funcionarios[totalFuncionarios].nome, 
@@ -122,15 +117,11 @@ void alterarCargo() {			//TESTADO
 void exclui_funcionario(){
 	 FUNCIONARIO funcionarios[MAX];
     int totalFuncionarios = 0;
-    int idProcurado=0, i;
+    int idProcurado=0, i,k=MAX+1;
     char novoCargo[MAX];
     
     // Abrir o arquivo para leitura
-    arquivo = fopen("funcionario.txt", "r");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        return;
-    }
+    open_R();
 
     // Ler os dados do arquivo
     while (fscanf(arquivo, "%s %s %s %d", funcionarios[totalFuncionarios].nome, 
@@ -155,7 +146,7 @@ void exclui_funcionario(){
             strcpy(funcionarios[i].sobrenome,"Excluido");
 			strcpy(funcionarios[i].cargo, "Excluido");
 			funcionarios[i].id=0;
-            
+            k=i;
             printf("Cargo excluido com sucesso!\n");
             break;
         }
@@ -167,16 +158,14 @@ void exclui_funcionario(){
     }
 
     // Abrir o arquivo para reescrever os dados alterados
-    arquivo = fopen("funcionario.txt", "w");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo para escrita.\n");
-        return;
-    }
+    open_W();
 
     // Regravar todos os dados no arquivo
     for (i = 0; i < totalFuncionarios; i++) {
+    	if(funcionarios[i].id!=funcionarios[k].id){
         fprintf(arquivo, "%s %s %s %d\n", funcionarios[i].nome, funcionarios[i].sobrenome, 
                 funcionarios[i].cargo, funcionarios[i].id);
+            }
     }
 
     fclose(arquivo);
@@ -190,30 +179,55 @@ int sair =0;
 		
 	switch(menu) {
 		case 1:
-		//	cadastro de funcionario!
-		cadastra_funcionario();
-		//contagem++;
-		break;		
+			cadastra_funcionario();
+			getchar();
+			break;		
 	
 		case 2:
-		alterarCargo();
+			alterarCargo();
+			getchar();
 			break;
+			
 		case 3:
-		//Excluir
-		exclui_funcionario();
+			exclui_funcionario();
+			getchar();
 			break;
+			
 		case 4:
-		//Lista de funcionarios
-		imprime_lista();
-			break;	
+			imprime_lista();
+			getchar();
+			break;
+				
 		default:
-		sair=1;
-		break;
+			sair=1;
+			break;
 	}
 		
 	}while(sair!=1);
 }
 
+void open_R(){
+	arquivo = fopen("funcionario.txt", "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+}
+
+void open_W(){
+	    arquivo = fopen("funcionario.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+}
+
+void open_AW(){
+	arquivo = fopen("funcionario.txt","a+");
+		if(arquivo==NULL){
+			fopen("funcionario.txt","w");
+		}
+}
 
 
 
