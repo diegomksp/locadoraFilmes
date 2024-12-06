@@ -1,6 +1,7 @@
 #ifndef _FUNCIONARIO_H_
 #define _FUNCIONAIRO_H_
 #define MAX 100
+#include <stdio.h>
 
 typedef struct {
     char nome[MAX];
