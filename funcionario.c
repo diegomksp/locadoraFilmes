@@ -6,7 +6,8 @@
 
 
 
-FUNCIONARIO cadastra_funcionario(){			//Função testada e funcionando!
+
+FUNCIONARIO cadastra_funcionario(){			//Funï¿½ï¿½o testada e funcionando!
 		open_AW();
 		
 		printf("Entre com o primeiro nome: ");
@@ -22,9 +23,10 @@ FUNCIONARIO cadastra_funcionario(){			//Função testada e funcionando!
 		scanf("%d",&a.id);
 		int c;
     	while ((c = getchar()) != '\n' && c != EOF) { }
+
+        printf("Nova funcionalidade");
 		
 		grava_txt();		
-
 
 }
 
@@ -39,7 +41,7 @@ void menu_funcionario(){
 	
 }
 
-void grava_txt(){		//Função testada
+void grava_txt(){		//Funï¿½ï¿½o testada
 	fprintf(arquivo, "%s %s %s %d\n", a.nome, a.sobrenome, a.cargo, a.id);
 	fclose(arquivo);
 	printf("Arquivo gravado com sucesso.\n");
@@ -75,7 +77,7 @@ void alterarCargo() {			//TESTADO
     }
     fclose(arquivo);
     
-    // Solicitar o ID do funcionário a ser alterado
+    // Solicitar o ID do funcionï¿½rio a ser alterado
     printf("Digite o ID do funcionario para alterar o cargo: ");
     scanf("%d", &idProcurado);
 
@@ -91,6 +93,7 @@ void alterarCargo() {			//TESTADO
             break;
         }
     }
+
 
     if (i == totalFuncionarios) {
         printf("Funcionario com ID %d nao encontrado.\n", idProcurado);
@@ -132,7 +135,7 @@ void exclui_funcionario(){
     }
     fclose(arquivo);
     
-    // Solicitar o ID do funcionário a ser alterado
+    // Solicitar o ID do funcionï¿½rio a ser alterado
     printf("Digite o ID do funcionario para Excluir: ");
     scanf("%d", &idProcurado);
 
